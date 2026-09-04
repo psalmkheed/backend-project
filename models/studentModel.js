@@ -14,7 +14,7 @@ const studentSchema = new mongoose.Schema({
       reg_number: {
             type: String,
             required: [true, "Registration number is required"],
-            minlength: [2, "Registration number must be at least 2 characters"],
+            minlength: [8, "Registration number must be at least 8 characters"],
             trim: true,
             match: [
                   /^[A-Za-z0-9]+$/,
@@ -32,8 +32,14 @@ const studentSchema = new mongoose.Schema({
                   /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   "Please provide a valid email address"
             ]
-      }
-})
+      }  
+}, {
+        timestamps: {
+            createdAt: "created_at",
+            updatedAt: "updated_at"
+        }
+    }
+);
 
 const Student = mongoose.model("Student", studentSchema);
 
