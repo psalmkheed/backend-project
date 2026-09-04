@@ -19,7 +19,8 @@ const studentSchema = new mongoose.Schema({
             match: [
                   /^[A-Za-z0-9]+$/,
                   "Registration number can only contain letters and numbers"
-            ]
+            ],
+            unique: true
       },
       email: {
             type: String,

@@ -25,6 +25,13 @@ class StudentController {
       async getAllStudents(req, res) {
             try{
                   const students = await Student.find();
+
+                  if(!students){
+                        return res.status(400).json({
+                              message: "No students found",
+                              status: "error"
+                        });
+                  };
                   return res.status(200).json({
                         message: "All students fetched successfully",
                         status: "success",

@@ -1,9 +1,10 @@
+require("dotenv").config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const studentRoutes = require("./routes/studentRoutes");
 
-const db = "mongodb://localhost:27017/student_management"
+const db = process.env.MONGO_DB_URI;
 
 mongoose.connect(db)
 .then(()=> console.log("Database connected successfully"))
