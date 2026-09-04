@@ -1,5 +1,4 @@
 const Student = require("../models/studentModel");
-
 class StudentController {
       // CREATE create a new student account.
       async createStudent(req, res) {
@@ -23,10 +22,10 @@ class StudentController {
 
       // READ get all students.
       async getAllStudents(req, res) {
-            try{
+            try {
                   const students = await Student.find();
 
-                  if(!students){
+                  if (!students) {
                         return res.status(400).json({
                               message: "No students found",
                               status: "error"
@@ -38,7 +37,7 @@ class StudentController {
                         data: students
                   })
 
-            } catch(err){
+            } catch (err) {
                   return res.status(500).json({
                         message: err.message,
                         status: "error",
@@ -47,55 +46,48 @@ class StudentController {
       }
 
       // READ find student by their id.
-
       async getStudentById(req, res) {
-            try{
+            try {
+                  const student = await Student.findById(req.params.id);
 
-            const student = await Student.findById(req.params.id);
+                  if (!student) {
+                        return res.status(400).json({
+                              message: "Student not found",
+                              status: 'error'
+                        })
+                  }
 
-            if (!student) {
-                  return res.status(400).json({
-                        message: "Student not found",
-                        status: 'error'
+                  return res.status(200).json({
+                        message: "Student fetched successfully",
+                        status: "success",
+                        data: student
+                  })
+            } catch (err) {
+                  return res.status(500).json({
+                        message: err.message,
+                        status: "error"
                   })
             }
-
-            return res.status(200).json({
-                  message: "Student fetched successfully",
-                  status: "success",
-                  data: student
-            })
-      } catch(err){
-            return res.status(500).json({
-                  message: err.message,
-                  status: "error"
-            })
-      }
       }
 
       // UPDATE update student profile.
-
-      async updateStudent(req, res){
-            try{
-                  const {name, reg_number, email } = req.body;
-                  const student = await Student.findByIdAndUpdate( req.params.id,
-                  {
-                        name, 
-                        reg_number, 
-                        email
-                  },  
-                  {
-                        new: true,
-                        runValidators: true
-                  }
+      async updateStudent(req, res) {
+            try {
+                  const { name } = req.body;
+                  const student = await Student.findByIdAndUpdate(req.params.id,
+                        { name },
+                        {
+                              returnDocument: "after",
+                              runValidators: true
+                        }
                   )
-                  
+
                   return res.status(200).json({
                         message: "Student updated successfully",
                         status: "success",
                         data: student
                   })
-            } catch(err){
+            } catch (err) {
                   return res.status(500).json({
                         message: err.message,
                         status: "error"
@@ -104,15 +96,14 @@ class StudentController {
       }
 
       // DELETE delete student profile.
-      async deleteStudent(req, res){
-            try{
+      async deleteStudent(req, res) {
+            try {
                   const student = await Student.findByIdAndDelete(req.params.id);
                   return res.status(200).json({
                         message: "Student deleted successfully",
-                        status: "success",
-                        data: student
+                        status: "success"
                   })
-            } catch(err){
+            } catch (err) {
                   return res.status(500).json({
                         message: err.message,
                         status: "error"
